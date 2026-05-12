@@ -1,8 +1,16 @@
+# 1. Pega uma imagem pura do Alpine Linux
+FROM alpine:latest AS alpine
+
+# 2. Inicia a imagem oficial do n8n
 FROM n8nio/n8n:latest
 
 USER root
 
-# Atualiza a lista do Debian e instala o Tesseract (com pacote em pt-BR) e o Poppler
-RUN apt-get update && apt-get install -y tesseract-ocr tesseract-ocr-por poppler-utils && rm -rf /var/lib/apt/lists/*
+# 3. Restaura o 'apk' (instalador) copiando da imagem pura para dentro do n8n
+COPY --from=alpine /sbin/apk /sbin/apk
+COPY --from=alpine /usr/lib/libapk.so* /usr/lib/
+
+# 4. Agora o apk vai funcionar! Instalamos o Tesseract (com pt-BR) e o Poppler
+RUN apk update && apk add --no-cache tesseract-ocr tesseract-ocr-por poppler-utils
 
 USER node
