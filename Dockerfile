@@ -10,7 +10,7 @@ USER root
 COPY --from=alpine /sbin/apk /sbin/apk
 COPY --from=alpine /usr/lib/libapk.so* /usr/lib/
 
-# 4. Agora o apk vai funcionar! Instalamos o Tesseract (com pt-BR) e o Poppler
-RUN apk update && apk add --no-cache tesseract-ocr tesseract-ocr-por poppler-utils
+# 4. Instala o Tesseract, Poppler e o pacote de idioma com o nome correto (data-por)
+RUN apk update && apk add --no-cache tesseract-ocr tesseract-ocr-data-por poppler-utils
 
 USER node
